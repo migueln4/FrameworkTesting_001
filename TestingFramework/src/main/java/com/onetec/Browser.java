@@ -16,18 +16,30 @@ public class Browser {
 
     static WebDriver driver;
     private ChromeOptions options;
-    //private DesiredCapabilities capabilities;
-    //static WebDriverWait wait;
+    private DesiredCapabilities capabilities;
+    private WebDriverWait wait;
 
     Browser() {
         options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-        //capabilities = DesiredCapabilities.chrome();
-        //options.addArguments("incognito");
-        //capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        //driver = new ChromeDriver(capabilities);
+        capabilities = DesiredCapabilities.chrome();
         driver = new ChromeDriver(options);
-        //wait = new WebDriverWait(driver,30);
+        wait = new WebDriverWait(driver,60);
+    }
+
+    Browser(String[] arguments) {
+        this();
+        for(String argument : arguments) {
+            options.addArguments(argument);
+        }
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        driver = new ChromeDriver(capabilities);
+    }
+
+    Browser(String argument) {
+        this();
+        options.addArguments(argument);
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        driver = new ChromeDriver(capabilities);
     }
 
     public void goTo(String url) {
@@ -42,35 +54,19 @@ public class Browser {
         driver.close();
     }
 
-    /*
-    public static void waitForLoad() {
-        ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
-                    public Boolean apply(WebDriver driver) {
-                        return ((JavascriptExecutor)driver).executeScript("return document.readyState").equals("complete");
-                    }
-                };
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(pageLoadCondition);
-        System.out.println("==============He terminado de esperar.===========");
-    }
-    */
-
-    public void takeScreenshot() {
+    public static void takeScreenshot(String path) {
         File captura = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
         try {
-            FileUtils.copyFile(captura,new File("C:/TestsQA/captura.png"));
+            FileUtils.copyFile(captura,new File("C:/TestsQA/Proyecto/Capturas/"+path));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /*
-    public WebElement waitToBeClickable(WebElement element) {
-
+    public void waitToBePresent(By by) {
         System.out.println("=======ME HAS PEDIDO QUE ESPERE================");
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+        wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
-    */
 
 
 }

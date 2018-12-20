@@ -17,6 +17,7 @@ public class UnitTest {
     public void canGoToJavaPathPage() {
         Pages.pathPages().goTo();
         Pages.pathPages().goToJavaPath();
+        Browser.takeScreenshot("captura.png");
         Assert.assertTrue(Pages.pathPages().isAt());
     }
 

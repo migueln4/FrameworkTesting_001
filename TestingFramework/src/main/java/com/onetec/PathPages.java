@@ -29,8 +29,6 @@ public class PathPages {
 
         enlace.click();
 
-        browser.takeScreenshot();
-
     }
 
     public boolean isAt() {
